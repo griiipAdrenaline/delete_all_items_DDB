@@ -1,4 +1,5 @@
 import boto3
+import sys
 
 ddb = boto3.resource('dynamodb')
 
@@ -18,10 +19,13 @@ def main(table_name):
         for each in data:  # Iterate over all the table rows by keys.
             # print each
             batch.delete_item(Key={key: each[key], key2: each[key2]})
-            count_del +=1
+            count_del += 1
+            print("Delete items count: %d" % count_del)
 
-    print "%s ITEMS HAS BEEN DELETED FROM DYNAMODB TABLE: %s" % (count_del,table_name)
+    print "%s ITEMS HAS BEEN DELETED FROM DYNAMODB TABLE: %s" % (count_del, table_name)
 
 
 if __name__ == '__main__':
-    main('griiip_data_21_03_19')
+    table_name_arg = str(sys.argv[1])
+    print("Table to delete %s" % table_name_arg)
+    main(table_name_arg)
